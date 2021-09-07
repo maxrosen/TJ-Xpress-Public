@@ -1,0 +1,252 @@
+:root {
+  /*
+    TJX Branding Variables
+    From: https://tjxinc.sharepoint.com/sites/BRC/BrandResourceDownload/39007-BB-TJX-Global-BrandBook-11x8_5-F.PDF
+    Colors can be found on page 33
+    */
+
+  --cherry-red: rgb(155, 12, 35);
+  --warm-red: rgb(211, 7, 43);
+  --magenta: rgb(229, 0, 109);
+  --slate: rgb(67, 66, 65);
+  --mocha: rgb(211, 204, 189);
+  --cream: rgb(250, 249, 241);
+}
+
+html {
+  background-color: var(--slate);
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Navbar */
+
+header {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  max-height: 5em;
+}
+
+#tjxpress-logo {
+  max-width: 20%;
+  height: auto;
+  max-height: 10vmax;
+  padding: 1em;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#tjxpress-decal {
+  margin-left: 10%;
+  position: relative;
+  max-height: 10vmax;
+}
+
+#menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: 60%;
+  padding-top: 1.5em;
+  align-items: right;
+  position: absolute;
+}
+
+#menu button {
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+#menu button:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: black;
+}
+
+#menu button.active:disabled {
+  background-color: white;
+  color: black;
+  opacity: 1;
+  cursor: default;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  padding-right: 1.5em;
+}
+
+/* Search */
+
+#search-fields {
+  color: white;
+  padding: 4vh 2vw;
+}
+
+/* Tables */
+
+tbody tr {
+  cursor: pointer;
+}
+
+/* Pagination */
+
+table {
+  margin-bottom: 9vh !important;
+}
+
+thead {
+  font-weight: bold;
+}
+
+.pagination-link,
+.pagination-next,
+.pagination-previous {
+  background-color: white;
+  border-color: white;
+  color: black;
+}
+
+.pagination-link.is-current {
+  background-color: var(--magenta);
+  border-color: var(--magenta);
+}
+
+nav.pagination {
+  position: fixed;
+  height: 9vh;
+  bottom: 0;
+  background-color: rgba(33, 33, 33, 0.5);
+  padding: 2vh 4vw;
+  width: 100%;
+  margin-bottom: 0 !important;
+  margin-left: 0 !important;
+}
+
+section.modal-card-body > div {
+  margin-bottom: 2em;
+}
+
+label.modal-saved-confirmation {
+  white-space: nowrap;
+  color: rgb(51, 161, 51);
+}
+
+label.modal-error-on-save {
+  white-space: nowrap;
+  color: var(--warm-red);
+}
+
+#searchArea,
+#searchArea2 {
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 1em;
+  align-content: center;
+}
+#names,
+#ids,
+#products,
+#orders {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin: 1em;
+  align-content: center;
+}
+#fnameSearch,
+#lnameSearch,
+#idSearch,
+#productNameSearch,
+#orderSearch {
+  margin-bottom: 0.5em;
+}
+.searchField {
+  display: inline-block;
+  -webkit-transition: box-shadow 0.4s ease, background 0.4s ease;
+  transition: box-shadow 0.4s ease, background 0.4s ease;
+  border: 0;
+  border-radius: 1px;
+  box-shadow: inset 0 0 0 2px #cccccc;
+  background: #ffffff;
+  padding: 0;
+  padding-right: 78px;
+  padding-left: 9px;
+  width: 100%;
+  height: 2em;
+  vertical-align: middle;
+  white-space: normal;
+  font-size: inherit;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.searchField:hover {
+  box-shadow: inset 0 0 0 2px #b3b3b3;
+}
+.searchField:focus,
+.searchField:active {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px #9b0c23;
+  background: #ffffff;
+}
+
+.searchBtn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: inherit;
+  margin: 0;
+  border: 0;
+  border-radius: 0 0px 0px 0;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 0;
+  width: 51px;
+  height: 100%;
+  vertical-align: middle;
+  text-align: center;
+  font-size: inherit;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.searchBtn::before {
+  display: inline-block;
+  margin-right: -4px;
+  height: 100%;
+  vertical-align: middle;
+  content: "";
+}
+
+.searchBtn:hover,
+.searchBtn:active {
+  cursor: pointer;
+}
+
+.searchBtn:focus {
+  outline: 0;
+}
+
+.searchBtn svg {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  fill: #d3072b;
+}
+
+.is-ghost {
+  color: white !important;
+}
+
+p#no-data-error {
+  font-weight: 1.6em;
+  color: white;
+  width: 100%;
+  text-align: center;
+}

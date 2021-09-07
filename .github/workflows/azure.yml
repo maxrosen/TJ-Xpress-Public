@@ -1,0 +1,71 @@
+# This workflow will build and push a node.js application to an Azure Web App when a release is created.
+name: Azure Deployment
+
+on:
+  release:
+    types: [created]
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  AZURE_WEBAPP_NAME: tjxpress # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: "." # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: "10.x" # set this to the node version to use
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: Azure/get-keyvault-secrets@v1
+        with:
+          keyvault: "tjxpress-kv"
+          secrets: "tjxpress-publish-profile, MySQL-credzz, MySQL-db, MySQL-server, MySQL-user, MySQL-db-test, DB-dialect, DB-PORT, PASSPORT-Secret"
+        id: KVsecrets
+      - uses: azure/mysql@v1
+        with:
+          server-name: ${{ steps.KVsecrets.outputs.MySQL-server }}
+          username: ${{ steps.KVsecrets.outputs.MySQL-user }}
+          password: ${{ steps.KVsecrets.outputs.MySQL-credzz }}
+          # This is optional, you want to connect directly
+          database: ${{ steps.KVsecrets.outputs.MySQL-db }}
+          sql-file: "./SQL/order_tracking_correct.sql"
+          #end test here
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - name: Create .env file for test db connection
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_DB_HOST: ${{ steps.KVsecrets.outputs.MySQL-server }}
+          envkey_DB_USER: ${{ steps.KVsecrets.outputs.MySQL-user }}
+          envkey_DB_PASSWORD: ${{ steps.KVsecrets.outputs.MySQL-credzz }}
+          envkey_DB_TEST: ${{ steps.KVsecrets.outputs.MySQL-db-test }}
+          envkey_DB_DIALECT: ${{ steps.KVsecrets.outputs.DB-dialect }}
+          envkey_PORT: ${{ steps.KVsecrets.outputs.DB-PORT }}
+          envkey_PASSPORT_SECRET: ${{ steps.KVsecrets.outputs.PASSPORT-Secret }}
+          file_name: .env
+      - name: npm install, build, and test
+        run: |
+          # Build and test the project, then
+          # deploy to Azure Web App.
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+      - name: "Deploy to Azure WebApp"
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ steps.KVsecrets.outputs.tjx-publish-profile }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      #- name: List directory
+      #run: cat .env #find "$(cd ..; pwd)" -name ".env"

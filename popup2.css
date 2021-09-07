@@ -1,0 +1,62 @@
+html {
+    background-color: rgb(223, 223, 223);
+    font-family: Helvetica, Arial, sans-serif;
+    
+}
+
+button{
+    display: flex;
+    margin: auto;
+}
+
+  
+  body {
+    padding: 40px;
+  }
+
+  .bgbox {
+      background-color: rgb(122, 2, 2);
+      width: 700px;
+      height: 500px;
+      /* display:center; */
+      
+  }
+
+  .textbox1{
+    background-color: rgb(223, 223, 223) ;
+    width: 500px;
+    height: 200px;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 5px;
+    margin: 1px;
+  }
+
+  .textbox2{
+    background-color: rgb(223, 223, 223) ;
+    width: 500px;
+    height: 50px;
+    border: 1px solid rgb(0, 0, 0);
+    padding: 5px;
+    margin: 1px;
+  }
+
+  .textbox3{
+    background-color: rgb(223, 223, 223) ;
+    width: 500px;
+    height: 100px;
+    border: 1px solid black;
+    padding: 5px;
+    margin: 1px;
+  }
+
+.modal {
+ 
+  left: 300px;
+  right: 0;
+  background-color: #d4d3d3b9;
+  padding: 40px;
+  max-height: 80%;
+  width: 50%;
+  will-change: top, opacity;
+ 
+}

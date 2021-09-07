@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>TJ-Xpress</title>
+        <link rel="icon" href="/assets/tjxpress.svg">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href="/stylesheets/style.css"/>
+
+        <!-- Head Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <header>
+            <img id="tjxpress-logo" alt="TJXpress" src="/assets/tjxpress.svg">
+            <img id="tjxpress-decal" alt="Banner" src="/assets/header-bg.png">
+            <ul id="menu">
+                <li class="item"><button class="button active" id="customers-button" onclick="TableFunctions.populateCustomers()" disabled>Customers</button></li>
+                <li class="item"><button class="button" id="orders-button" onclick="TableFunctions.populateOrders()">Orders</button></li>
+                <li class="item"><button class="button" id="products-button" onclick="TableFunctions.populateProducts()">Products</button></li> 
+            </ul>
+        </header>
+
+        <!-- Search bar - search icon-->
+        <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+            <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-search-11" viewBox="0 0 40 40">
+                <path d="M15.553 31.106c8.59 0 15.553-6.963 15.553-15.553S24.143 0 15.553 0 0 6.963 0 15.553s6.963 15.553 15.553 15.553zm0-3.888c6.443 0 11.665-5.222 11.665-11.665 0-6.442-5.222-11.665-11.665-11.665-6.442 0-11.665 5.223-11.665 11.665 0 6.443 5.223 11.665 11.665 11.665zM27.76 31.06c-.78-.78-.778-2.05.004-2.833l.463-.463c.783-.783 2.057-.78 2.834-.003l8.168 8.17c.782.78.78 2.05-.003 2.832l-.463.463c-.783.783-2.057.78-2.833.003l-8.17-8.167z"
+                fill-rule="evenodd" />
+            </symbol>
+            <symbol xmlns="http://www.w3.org/2000/svg" id="sbx-icon-clear-3" viewBox="0 0 20 20">
+                <path d="M8.114 10L.944 2.83 0 1.885 1.886 0l.943.943L10 8.113l7.17-7.17.944-.943L20 1.886l-.943.943-7.17 7.17 7.17 7.17.943.944L18.114 20l-.943-.943-7.17-7.17-7.17 7.17-.944.943L0 18.114l.943-.943L8.113 10z" fill-rule="evenodd" />
+              </symbol>
+        </svg>
+
+        <!-- Search Bar -->
+        <div class="columns mt-4">
+            <div class="column">
+                <div class="rows" id="searchArea">
+                    <!-- First and Last name fields -->
+                    <div class="row table-specific" id="names">
+                        <input id="fnameSearch" type="text" size="30" maxlength="30" placeholder="Search for First Name..." class="searchField">
+                        <input id="lnameSearch" type="text" size="30" maxlength="30" placeholder="Search for Last Name..." class="searchField">
+                        <!-- Submit button -->
+                        <button type="submit" title="Submit your search query." class="searchBtn" onclick="TableFunctions.searchByName()">
+                            <svg role="img" aria-label="Search">
+                              <use xlink:href="#sbx-icon-search-11"></use>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Orders field -->
+                    <div class="row table-specific" id="orders" style="display: none;">
+                        <input id="orderSearch" type="text" size="30" maxlength="30" placeholder="Search for Customer ID..." class="searchField">
+                        <!-- Submit button -->
+                        <button type="submit" title="Submit your search query." class="searchBtn" onclick="TableFunctions.searchOrdersByCustomerID()">
+                            <svg role="img" aria-label="Search">
+                              <use xlink:href="#sbx-icon-search-11"></use>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Product name field -->
+                    <div class="row table-specific" id="products" style="display: none;">
+                        <input id="productNameSearch" type="text" size="30" maxlength="30" placeholder="Search for Product Name..." class="searchField">
+                        <!-- Submit button -->
+                        <button type="submit" title="Submit your search query." class="searchBtn">
+                            <svg role="img" aria-label="Search">
+                              <use xlink:href="#sbx-icon-search-11"></use>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- ID field -->
+                    <div class="row" id="ids">
+                        <input id="idSearch" type="text" size="30" maxlength="30" placeholder="Search for ID..." class="searchField">
+                        <!-- Submit button -->
+                        <button type="submit" title="Submit your search query." class="searchBtn" onclick="TableFunctions.searchByID()">
+                            <svg role="img" aria-label="Search">
+                              <use xlink:href="#sbx-icon-search-11"></use>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Clear button -->
+                    <button type="reset" id="clearBtn" class="addClearBtn button is-small ml-4" onclick="TableFunctions.clearAllFields()">Clear Search Fields</button>
+                </div>
+            </div>
+
+            <!-- Right side buttons -->
+            <div class="column">
+                <div class="columns is-centered" id="searchArea2">
+                    <div class="column"></div>
+                    <div class="column buttons-column">
+                        <div class="has-text-centered pb-5">
+                            <!-- Buttons that Sam asked for go here -->
+                            <a type="button" class="linkBtn button is-small is-ghost" target="_blank" href="https://app.powerbi.com/groups/me/reports/7e13875f-aed9-4088-8df6-9a59173060ea/ReportSection49c1c7b63eec70de186b">Business Analytics</a>
+                            <a type="button" class="linkBtn button is-small is-ghost" target="_blank" href="https://portal.azure.com/#@tjxinc.onmicrosoft.com/dashboard/arm/subscriptions/59ef1c27-bb6e-4426-ac91-66939c915341/resourceGroups/order_DBServer/providers/Microsoft.Portal/dashboards/a0081dab-f4cd-475d-818b-ca8e0b2d9435">Database Metrics</a>
+                        </div>
+                        <!-- Add New Item -->
+                        <div class="has-text-centered">
+                            <button type="button" id="addBtn" class="addClearBtn button mt-5" onclick="TableFunctions.addNewItem()">Add New Item</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="section m-0 p-0">
+            <div class="content table-container m-0 p-0">
+                <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    
+                    <!--
+                        <colgroup>
+                        <col span="1" style="width: 5%;">
+                        <col span="1" style="width: 10%;">
+                        <col span="1" style="width: 40%;">
+                        <col span="1" style="width: 15%;">
+                        <col span="1" style="width: 10%;">
+                        <col span="1" style="width: 20%;">
+                     </colgroup>
+                    -->
+                    
+                    <thead id="listview-thead"></thead>
+                    <tbody id="listview-tbody"></tbody>
+                </table>
+                <p id="no-data-error" hidden>No entries match this search.</p>
+            </div>            
+        </section>
+        
+
+        <!-- Customer popup -->
+        <div class="modal" id="customer-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Customer ID: <span id="customer-id"></span></p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div>
+                        <h2 class="mb-4">Name</h2>
+                        <div class="columns">
+                            <div class="column is-one-third">
+                                <input id="first-name" class="input" placeholder="First" value="" disabled>
+                            </div>
+                            <div class="column is-one-third">
+                                <input id="middle-name" class="input" placeholder="Middle" value="" disabled>
+                            </div>
+                            <div class="column is-one-third">
+                                <input id="last-name" class="input" placeholder="Last" value="" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="mb-4">Contact Information</h2>
+                        <div class="columns">
+                            <div class="column is-half">
+                                <input type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" id="phone-number" class="input" placeholder="Phone Number" value="" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="mb-4">Address</h2>
+                        <div class="columns">
+                            <div class="column is-one-fifth">
+                                <input id="house-number" class="input" placeholder="#" value="" disabled>
+                            </div>
+                            <div class="column">
+                                <input id="street" class="input" placeholder="Street" value="" disabled>
+                            </div>
+                            <div class="column">
+                                <input id="city" class="input" placeholder="City" value="" disabled>
+                            </div>
+                        </div>
+                        <div class="columns">
+                            <div class="column">
+                                <input id="state" class="input" placeholder="State" value="" disabled>
+                            </div>
+                            <div class="column">
+                                <input id="country" class="input" placeholder="Country" value="" disabled>
+                            </div>
+                            <div class="column">
+                                <input id="zip" class="input" placeholder="ZIP" value="" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="mb-4">Notes</h2>
+                        <div class="columns">
+                            <div class="column">
+                                <textarea class="textarea" id="notes" placeholder="Notes" value="" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button" onclick="TableFunctions.showCustomerOrders()">View orders</button>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button modal-edit" onclick="ModalFunctions.enableEditMode();">Edit</button>
+                    <button class="button modal-save" onclick="ModalFunctions.saveData();" hidden>Save</button>
+                    <div style="width: 100%;"></div>
+                    <label class="modal-saved-confirmation" hidden>&#10004; Saved</label>
+                    <label class="modal-error-on-save" hidden>&#10008; Error</label>
+                </footer>
+            </div>
+        </div>
+
+        <!-- Order popup
+            TODO : Order popup
+
+            order_id, customer_id, status, datetime, total_price, notes, received
+
+            Example response object: https://tjxpress.azurewebsites.net/api/order/order_id/1
+
+            Make sure you format the datetime properly, you can do this however you think makes sense and looks good
+        -->
+        <div class="modal" id="order-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Order ID: <span id="order-id"></span></p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="container">
+                        <label for="" class="label mb-4">Customer ID: <span id="customer-id"></span></label>
+                        <div class="columns">
+                            <div class="column">
+                                <label for="" class="label">Date & Time</label>
+                                <p><span id="date-time"></span></p>
+                            </div>
+                            <div class="column">
+                                <label for="" class="label">Total Price</label>
+                                <p>$<span id="total-price"></span></p>
+                            </div>
+                        </div>                             
+                        <div class="columns">
+                            <div class="column">
+                                <label for="" class="label">Status</label>
+                                <div class="control">
+                                    <select id="status" class="select" disabled>
+                                        <option>Draft</option>
+                                        <option>Open</option>
+                                        <option>Finalized</option>
+                                        <option>Preparing to ship</option>
+                                        <option>Ready for shipping</option>
+                                        <option>Shipped</option>
+                                        <option>Delivered</option>
+                                        <option>Closed</option>
+                                    </select>
+                                </div>
+                            </div>
+<!-- 
+example codes: 
+<div class="control">
+  <label class="radio">
+    <input type="radio" name="foobar">
+    Foo
+  </label>
+  <label class="radio">
+    <input type="radio" name="foobar" checked>
+    Bar
+  </label>
+</div>
+
+<div class="control">
+  <label class="radio">
+    <input type="radio" name="rsvp">
+    Going
+  </label>
+  <label class="radio">
+    <input type="radio" name="rsvp">
+    Not going
+  </label>
+  <label class="radio" disabled>
+    <input type="radio" name="rsvp" disabled>
+    Maybe
+  </label>
+</div>
+
+actual code:
+                            <label for="" class="label">Received</label>
+                                <div class="control">
+                                    <label class="radio">
+                                        <input id="received-yes" type="radio" name="">
+                                        Yes
+                                      </label>
+                                      <label id="received-no" class="radio">
+                                        <input type="radio" name="answer">
+                                        No
+                                      </label>
+                                </div>
+                            -->
+                            <div class="column">
+                                <label for="" class="label">Received</label>
+                                <div class="control">
+                                        <select id="received" class="select" disabled>
+                                          <option value=1>Yes</option>
+                                          <option value=0>No</option>
+                                        </select>
+                                </div>
+                            </div>
+                        </div>
+                        <label for="" class="label">Items</label>
+                        <div id="order-items" class="mb-5"></div>
+                        <label for="" class="label">Notes</label>
+                        <div class="control">
+                            <textarea id="notes" class="textarea" placeholder="notes" disabled></textarea>
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button modal-edit" onclick="ModalFunctions.enableEditMode();">Edit</button>
+                    <button class="button modal-save" onclick="ModalFunctions.saveData();" hidden>Save</button>
+                    <div style="width: 100%;"></div>
+                    <label class="modal-saved-confirmation" hidden>&#10004; Saved</label>
+                    <label class="modal-error-on-save" hidden>&#10008; Error</label>
+                </footer> 
+            </div>
+        </div>
+
+        <!-- Product popup -->
+        <div class="modal" id="product-modal">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Product ID: <span id="product-id"></span></p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div>
+                        <b><h2 class="mb-4">Product Name:</b> <span id="name"></span></h2>
+                    </div>
+
+                    <div>
+                        <b><h2 class="mb-4">SKU:</b> <span id="sku"></span></h2>
+                    </div>
+
+                    <div>
+                        <b><h2 class="mb-4">Price:</b> <span id="price"></span></h2>
+                            
+                    </div>
+
+                    <div>
+                        <b><h2 class="mb-4">Total Quantity:</b> <span id="total-quantity"></span> </h2>
+                    </div>
+
+                    <div>
+                       <b><h2 class="mb-4">Description:</b> <span id="description"></span></h2>
+                    </div>
+
+                </section>
+                <footer class="modal-card-foot">
+                </footer> 
+            </div>
+        </div>
+
+        <nav class="pagination is-rounded" role="navigation" aria-label="pagination">
+            <button class="pagination-previous" onclick="TableFunctions.prev()">Previous Page</button>
+            <button class="pagination-next" onclick="TableFunctions.next()">Next Page</button>
+            <ul class="pagination-list"></ul>
+        </nav>
+
+        <!-- Body Scripts -->
+        <script src="/scripts/utils.js"></script>
+        <script src="/scripts/modals.js"></script>
+        <script src="/scripts/table.js"></script>
+        <script src="/scripts/main.js"></script>
+    </body>
+</html>
